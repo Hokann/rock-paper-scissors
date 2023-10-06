@@ -69,7 +69,29 @@ document.addEventListener("click", function(e){
         default:
         break;
     }
-    div.innerText += roundResults[0];
-    
 
+    let roundMessage = roundResults[0]; let roundWin = roundResults[1];
+    div.innerText += roundMessage;
+
+    if (roundWin === true){
+        win += 1;
+    }
+    else if (roundWin === false){
+        loss += 1;
+    }
+    div.innerText += "\n The score is "+win+" - "+loss+".";
+
+    if (win === 5){ 
+        div.innerText += "\n Congratulations! You beat the computer!";
+        win = 0; loss = 0;
+    }
+    else if (loss === 5){
+        div.innerText += "\n Game over... You lost"
+        win = 0; loss = 0;
+    }
+    
 })
+
+
+//when win = 5 -> game over - win
+//when loss = 5 -> game over - lose
