@@ -1,3 +1,4 @@
+//to get a random number, either 1,2 or 3, each associated to a rps move
 function getComputerChoice(){
     let choice = Math.ceil(Math.random()*3);
     if (choice === 1){ return 'Rock' }
@@ -6,13 +7,16 @@ function getComputerChoice(){
 }
 
 function playRound(playerSelection){
+    //array to store results [message, winner]
     let results = [];
     let winner = false; message = '';
     let computerSelection = getComputerChoice();
     //cheating the switch function a little by using true for our cases. But a lot less code + we can fit the tie condition.
     switch(true){
+        //case : tie -> no winner, we use -1 as a placeholder
         case(playerSelection === computerSelection):
             return results = ["It's a Tie! Computer chose "+computerSelection, -1];
+        //the 3 cases in which we win
         case(playerSelection === 'Rock' && computerSelection === 'Scissors'):
             winner = true;
             break;
@@ -36,6 +40,7 @@ function playRound(playerSelection){
 let win = 0;
 let loss = 0;
 let roundResults = [];
+//setting up the ui
 const container = document.querySelector('body');
 const btnContainer = document.createElement('div');
 const btn1 = document.createElement('button');
@@ -51,26 +56,29 @@ container.appendChild(btnContainer);
 const div = document.createElement('div');
 container.appendChild(div);
 
+//event listener for the whole document, but we only do something when buttons are pressed
 document.addEventListener("click", function(e){
+    //for each new click, we erase the (past) results
     div.innerText = '';
+    //switch-case for the 3 buttons. Once button is clicked we play a round with the chosen move
+    //e.target -> the HTML element in its entirety, e.g. <button>Rock</button>. .innerText to get 'Rock'
     switch (e.target.innerText){
         case ('Rock'):
-            console.log(e.target.innerText);
             roundResults = playRound('Rock');
             break;
         case ('Paper'):
-            console.log(e.target.innerText);
             roundResults = playRound('Paper');
             break;
         case ('Scissors'):
-            console.log(e.target.innerText);
             roundResults = playRound('Scissors');
             break;
+        //in all other cases, we do nothing
         default:
         break;
     }
 
     let roundMessage = roundResults[0]; let roundWin = roundResults[1];
+
     div.innerText += roundMessage;
 
     if (roundWin === true){
@@ -83,6 +91,7 @@ document.addEventListener("click", function(e){
 
     if (win === 5){ 
         div.innerText += "\n Congratulations! You beat the computer!";
+        //reinitialize the score
         win = 0; loss = 0;
     }
     else if (loss === 5){
@@ -91,7 +100,3 @@ document.addEventListener("click", function(e){
     }
     
 })
-
-
-//when win = 5 -> game over - win
-//when loss = 5 -> game over - lose
