@@ -5,14 +5,14 @@ function getComputerChoice(){
     else { return 'Scissors'}
 }
 
-function playRound(playerSelection, computerSelection){
-    //formatting playerSelection first letter capital, the rest lowercase
-    playerSelection = playerSelection.slice(0,1).toUpperCase()+playerSelection.slice(1,playerSelection.length).toLowerCase();
-    let winner = false;
+function playRound(playerSelection){
+    let results = [];
+    let winner = false; message = '';
+    let computerSelection = getComputerChoice();
     //cheating the switch function a little by using true for our cases. But a lot less code + we can fit the tie condition.
     switch(true){
         case(playerSelection === computerSelection):
-            return ["It's a Tie. Computer chose "+computerSelection, -1];
+            return results = ["It's a Tie! Computer chose "+computerSelection, -1];
         case(playerSelection === 'Rock' && computerSelection === 'Scissors'):
             winner = true;
             break;
@@ -23,79 +23,53 @@ function playRound(playerSelection, computerSelection){
             winner=true;
             break;
     }
-    //Decision Win/Lose
-    //array used to keep track if it's a win or loss (used for score later on) + a win/loss message
-    if (winner === true){
-        let message = "You Win! "+"Computer chose "+computerSelection;
-        return [message, winner];
+    if (winner){
+        message = "You Win! Computer chose "+computerSelection;
     }
     else{
-        let message = "You Lose! "+"Computer chose "+computerSelection;
-        return [message, winner];
+        message = "You Lose! Computer chose "+computerSelection;
     }
-    }
-    
-function game(){
-    let i=0;
-    let win = 0;
-    let loss = 0;
-    while (i<5){
-        let playerSelection = prompt("Rock, Paper or Scissors ?"); //ideally, catch any prompts which give something other than rock, paper, scissors.
-        let computerSelection = getComputerChoice();
-        
-        let results = playRound(playerSelection,computerSelection);
-        //false == 0 & true == 1, to keep track of score
-        if (results[1] == 0){
-            loss += 1;
-        }
-        else if (results[1] == 1){
-            win += 1;
-        }
-        //results of a single round
-        console.log(results[0]+". The score is "+win+" - "+loss);
-        i += 1;
+    return results = [message, winner] 
+
     }
 
-    //results of the game of 5 rounds
-    if (win>loss){
-        console.log("Congratulations! You won!")
-    }
-    else if (win === loss){
-        console.log("It's a Tie!")
-    }
-    else{
-        console.log("You lost..")
-    }
-}
-game();
+let win = 0;
+let loss = 0;
+let roundResults = [];
+const container = document.querySelector('body');
+const btnContainer = document.createElement('div');
+const btn1 = document.createElement('button');
+btn1.innerText = 'Rock';
+const btn2 = document.createElement('button');
+btn2.innerText = 'Paper';
+const btn3 = document.createElement('button');
+btn3.innerText = 'Scissors';
+btnContainer.appendChild(btn1);
+btnContainer.appendChild(btn2);
+btnContainer.appendChild(btn3);
+container.appendChild(btnContainer);
+const div = document.createElement('div');
+container.appendChild(div);
 
-
-
-
-
-
-
-/* USING SWITCH WITH THE VALUES OF PLAYERSELECTION, BUT REQUIRES ADDITIONAL IF STATEMENT TO EVALUATE COMPUTERSELECTION
-    if (computerSelection === playerSelection){
-        return "It's a Tie!"
-    }
-    switch(playerSelection){
-
+document.addEventListener("click", function(e){
+    div.innerText = '';
+    switch (e.target.innerText){
         case ('Rock'):
-            if (computerSelection === 'Scissors'){
-                winner = true;
-            }
+            console.log(e.target.innerText);
+            roundResults = playRound('Rock');
             break;
+        case ('Paper'):
+            console.log(e.target.innerText);
+            roundResults = playRound('Paper');
+            break;
+        case ('Scissors'):
+            console.log(e.target.innerText);
+            roundResults = playRound('Scissors');
+            break;
+        default:
+        break;
+    }
+    div.innerText += roundResults[0];
+    
 
-        case('Paper'):
-            if (computerSelection === 'Rock'){
-                winner = true;
-            }
-            break;
-
-        case('Scissors'):
-            if (computerSelection === 'Paper'){
-                winner = true;
-            }
-            break;
-    } */
+})
